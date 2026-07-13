@@ -1,0 +1,23 @@
+Hot Storage: i need solution for the following, here my source database may be sqlserver of PostgreSQL, that is still in discussion, i need solution irrespective of the database i use,
+-----------------
+1. database tables portioning:  i have to detach tables perodically monthly basis, and move this detached tables(may be over 60 tables at a time) to aws S3 as parquet files with appropriate partitioned folders, so i that i can query them using athena or load to another RDS. once drop them successfully to S3, delete the detached partitioning from source RDS database safely may be we can take backup of that as a incremental backup.
+2. if no partitioning, just get previous month data from all these tables and move them to S3 but partitioning as similar to year,month,folders
+can you please provide the simple approach, keep your response as simple as possible and precise in fewer lines but well described with bullet points, i need the approach to follow, what services or tool can help here
+
+
+Cold storage:
+--------------------
+I will drop parquet files periodically,
+you have to consider 2 things here, 
+1.READ-ONLY COLD-STORAGE: first thing, COLD storage is used for only read-only, i can query coldstorage ie S3 parquest files using athena,  
+
+2.COLD STORAGE that allow read, select, update, modify, delete rows from COLD Storage, may be i have to go for other secondary AWS RDS for cold storage.
+how can we move from aws s3 parquet to RDS instance,  I need solution for following different options or appraoches:
+1. as soon parguet file drop on S3 , there should be an automate service has to trigger and move data from parquet to RDS
+2.  parquet is periodically generated and dropped inside S3 bucket with partitioning S3 folders,  say year=2024 month=jan or amy month,  year=2025, month=feb or anymonth,  year=2026, month=feb....so on,  how can archive when new file drops in S3 folder, it can drop in any folder its depends when its archived, FYI,  i have a database of more than 60 tables, not sure which table got updated and archived parquet.
+how to find apprpriate target tables for appropriate target files,  or how is this,  can i load all the database tables each time so that it will overwritten if exists so that I'll be having upto date data,
+also, i use postgresql or sqlserver as cold storage i'm not sure yet,   but only thing i know is , whether i use sqlserver or postgresql, i have to restore incremental data parquet to cold storage rds,
+how can we load data from s3 parquet to rds?
+if incremental how it ensure, to update or delete or insert,  if there is unique violation, or duplicate insertion, or primary key , foriegn key violatoin, ,  how to build a robust job so that it should not break or stop or fail abruptly?,
+
+suggest complete end to end flow,  dont worry how the file will be dropped , i will take care of that,  can you please provide the simple approach, keep your response as simple as possible and precise
